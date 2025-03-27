@@ -71,7 +71,7 @@ public class ShipController : MonoBehaviour
 
         if (_isMoving)
         {
-            _rb.drag = 3;
+            _rb.drag = 2;
             if (_rb.velocity.magnitude <= _maxSpeed)
             {
                 _rb.AddForce(transform.forward * _motorForce);
@@ -97,7 +97,7 @@ public class ShipController : MonoBehaviour
             _rb.AddTorque(transform.up * -_rotationSpeed * Time.deltaTime * 0.1f,
             ForceMode.VelocityChange);
         }
-        else if (transform.rotation.y < -1)
+        else
         {
             _rb.AddTorque(transform.up * _rotationSpeed * Time.deltaTime * 0.1f,
             ForceMode.VelocityChange);
@@ -108,7 +108,7 @@ public class ShipController : MonoBehaviour
             _rb.AddTorque(transform.right * -_rotationSpeed * Time.deltaTime * 0.1f,
             ForceMode.VelocityChange);
         }
-        else if (transform.rotation.x < -1)
+        else
         {
             _rb.AddTorque(transform.right * _rotationSpeed * Time.deltaTime * 0.01f,
             ForceMode.VelocityChange);
@@ -119,7 +119,7 @@ public class ShipController : MonoBehaviour
             _rb.AddTorque(transform.forward * -_rotationSpeed * Time.deltaTime * 0.01f,
             ForceMode.VelocityChange);
         }
-        else if (transform.rotation.z < -1)
+        else
         {
             _rb.AddTorque(transform.forward * _rotationSpeed * Time.deltaTime * 0.01f,
             ForceMode.VelocityChange);
