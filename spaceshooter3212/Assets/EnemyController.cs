@@ -68,4 +68,9 @@ public class EnemyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, 
             Quaternion.LookRotation(_direction), 0.1f);
     }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
+    }
 }
