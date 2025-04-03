@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _searchRadius;
     [SerializeField] private float _safeDistance;
+    [SerializeField] public float _HP;
 
     private float _playerDistance;
     private float _targetDistance;
@@ -33,6 +34,11 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        if (_HP <= 0)
+        {
+            DestroyShip();
+        }
+
         _playerDistance = Vector3.Distance(transform.position, _player.position);
         _targetDistance = Vector3.Distance(transform.position, _target.position);
 
@@ -69,7 +75,17 @@ public class EnemyController : MonoBehaviour
             Quaternion.LookRotation(_direction), 0.1f);
     }
 
-    public void DestroyObject()
+    public float GetHP()
+    {
+        return _HP;
+    }
+
+    public void GetDamage(float damage)
+    {
+        _HP -= damage;
+    }
+
+    public void DestroyShip()
     {
         Destroy(gameObject);
     }

@@ -13,8 +13,19 @@ public class ShipShootController : MonoBehaviour
     private GameObject _shootPoint2;
     private GameObject _shootPoint3;
 
+    private float _shootTime;
+    private float _laserTime;
+    [SerializeField] private float _shootDeltaTime = 1;
+    [SerializeField] private float _laserDeltaTime = 1;
+    [SerializeField] private float _laserRechargeTime = 1;
+    private bool _isCharged = true;
+    private bool _isLaserVisible = true;
+
     void Start()
     {
+        _isCharged = true;
+        _isLaserVisible = true;
+
         _shootPoint1 = transform.GetChild(0).gameObject;
         _shootPoint2 = transform.GetChild(1).gameObject;
         _shootPoint3 = transform.GetChild(2).gameObject;
@@ -39,12 +50,38 @@ public class ShipShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (!_isCharged)
+        {
+            _shootTime += Time.deltaTime;
+            if (_shootTime >= _shootDeltaTime)
+            {
+                _isCharged = true;
+                _shootTime = 0;
+            }
+        }
+        if (!_isLaserVisible)
+        {
+            _laserTime += Time.deltaTime;
+            if (_laserTime >= _laserRechargeTime)
+            {
+                _isLaserVisible = true;
+                _laserTime = 0;
+            }
+        }
+
+        if (Input.GetMouseButton(0) && _isLaserVisible)
         {
             Vector3 targetPosition = LaserShoot();
 
             if (targetPosition != Vector3.zero)
             {
+                _laserTime += Time.deltaTime;
+                if (_laserTime >= _laserDeltaTime)
+                {
+                    _isLaserVisible = false;
+                    _laserTime = 0;
+                }
+
                 _lineRenderer1.enabled = true;
                 _lineRenderer1.SetPosition(0, _shootPoint1.transform.position);
                 _lineRenderer1.SetPosition(1, targetPosition);
@@ -73,11 +110,11 @@ public class ShipShootController : MonoBehaviour
 
         if (Physics.Raycast(_ray, out _raycastHit))
         {
-            if (_raycastHit.collider.gameObject.tag == "Enemy")
+            if (_raycastHit.collider.gameObject.tag == "Enemy" && _isCharged)
             {
-                Destroy(_raycastHit.collider.gameObject);
+                _isCharged = false;
+                _raycastHit.collider.gameObject.GetComponent<EnemyController>().GetDamage(Random.Range(1, 10));
             }
-
             return _raycastHit.point;
         }
         else
