@@ -11,6 +11,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float _motorForce = 1000f;
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private float _maxSpeed = 50f;
+    [SerializeField] public float _HP = 100f;
 
     private Rigidbody _rb;
 
@@ -28,6 +29,12 @@ public class ShipController : MonoBehaviour
     
     void Update()
     {
+
+        if (_HP <= 0)
+        {
+            DestroyShip();
+        }
+
         _pitchInput = Input.GetAxis("Vertical");
         _rollInput = Input.GetAxis("Horizontal");
 
@@ -124,5 +131,20 @@ public class ShipController : MonoBehaviour
             _rb.AddTorque(transform.forward * _rotationSpeed * Time.deltaTime * 0.01f,
             ForceMode.VelocityChange);
         }
+    }
+
+    public float GetHP()
+    {
+        return _HP;
+    }
+
+    public void GetDamage(float damage)
+    {
+        _HP -= damage;
+    }
+
+    public void DestroyShip()
+    {
+        Destroy(gameObject);
     }
 }

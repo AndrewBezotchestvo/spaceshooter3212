@@ -10,13 +10,17 @@ public class UIcontroller : MonoBehaviour
 
     private bool _isPause;
 
-    private void Start()
+    private void Start() 
     {
         _isPause = false;
+        _hpBar.maxValue = _player.GetComponent<ShipController>().GetHP();
+        _hpBar.value = _hpBar.maxValue;
     }
 
     private void Update()
     {
+        _hpBar.value = _player.GetComponent<ShipController>().GetHP();
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ChangePause();
