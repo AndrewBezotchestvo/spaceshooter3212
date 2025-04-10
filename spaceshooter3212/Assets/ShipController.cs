@@ -29,12 +29,6 @@ public class ShipController : MonoBehaviour
     
     void Update()
     {
-
-        if (_HP <= 0)
-        {
-            DestroyShip();
-        }
-
         _pitchInput = Input.GetAxis("Vertical");
         _rollInput = Input.GetAxis("Horizontal");
 

@@ -80,9 +80,8 @@ public class EnemyController : MonoBehaviour
         _playerDistance = Vector3.Distance(transform.position, _player.position);
         _targetDistance = Vector3.Distance(transform.position, _target.position);
 
-        if (_playerDistance < _searchRadius)
+        if (_playerDistance < _searchRadius || _targetDistance < _searchRadius)
         {
-            _isPlayer = true;
             Vector3 targetPosition = LaserShoot();
 
             if (targetPosition != Vector3.zero)
@@ -100,7 +99,11 @@ public class EnemyController : MonoBehaviour
                 _lineRenderer1.enabled = false;
                 _lineRenderer2.enabled = false;
             }
+        }
 
+        if (_playerDistance < _searchRadius)
+        {
+            _isPlayer = true;
         }
         else
         {
@@ -165,7 +168,8 @@ public class EnemyController : MonoBehaviour
             }
             else if (_raycastHit.collider.gameObject.tag == "Station" && _isCharged)
             {
-                _isCharged= false;
+                _raycastHit.collider.gameObject.GetComponentInParent<StationController>().GetDamage(Random.Range(1, 10));
+                _isCharged = false;
             }
             return _raycastHit.point;
         }
